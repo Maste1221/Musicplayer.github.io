@@ -21,7 +21,7 @@ app.use(express.json());
 connectDB();
 
 // Use song model for routes
-app.use('api/song',songRoute);
+app.use('api/song/',songRoute);
 
 const PORT = 5000;
 

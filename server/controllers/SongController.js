@@ -1,6 +1,6 @@
 import { json } from "express";
 import multer from 'multer';
-import Song from "../model/SongsModel.ts";
+import Song from "../model/SongsModel.js";
 
 const storage = multer.diskStorage({
     destination: "./public/uploads/",
@@ -271,34 +271,34 @@ export const getCountSongsInAlbum=[
     }
 ]
 // search song
-// export const searchSongs = async (req, res) => {
-//     const { query } = req.params; 
-//     const searchTerms = query; 
-//     const mongoQuery = {};
-//     if (searchTerms) {
-//         const terms = searchTerms.split(/[\s,]+/).filter(Boolean);
-//         mongoQuery.$or = [
-//           { title: { $regex: terms.join('|'), $options: 'i' } } , 
-//             { artist: { $regex: terms.join('|'), $options: 'i' } },
-//             { album: { $regex: terms.join('|'), $options: 'i' } }, 
-//             { genre: { $regex: terms.join('|'), $options: 'i' } }  
-//         ];
-//     }
+export const searchSongs = async (req, res) => {
+    const { query } = req.params; 
+    const searchTerms = query; 
+    const mongoQuery = {};
+    if (searchTerms) {
+        const terms = searchTerms.split(/[\s,]+/).filter(Boolean);
+        mongoQuery.$or = [
+          { title: { $regex: terms.join('|'), $options: 'i' } } , 
+            { artist: { $regex: terms.join('|'), $options: 'i' } },
+            { album: { $regex: terms.join('|'), $options: 'i' } }, 
+            { genre: { $regex: terms.join('|'), $options: 'i' } }  
+        ];
+    }
 
-//     try {
-//         const songs = await Song.find(mongoQuery);
-// // if there is song or not 
-//        if (songs.length === 0) {
-//         return res.status(404).json({
-//             message: 'No songs found matching your query.',
-//         });
-//     }
-//         return res.status(200).json(songs); 
-//     } catch (error) {
-//         console.error(error);
-//         return res.status(500).json({
-//             message: 'Error searching for songs',
-//             error: error.message,
-//         });
-//     }
-// };
+    try {
+        const songs = await Song.find(mongoQuery);
+// if there is song or not 
+       if (songs.length === 0) {
+        return res.status(404).json({
+            message: 'No songs found matching your query.',
+        });
+    }
+        return res.status(200).json(songs); 
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            message: 'Error searching for songs',
+            error: error.message,
+        });
+    }
+};
